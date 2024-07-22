@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -21,6 +24,14 @@ public class Cook {
 
     @Column(name = "name")
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "cook_orderitem",
+            joinColumns = @JoinColumn(name = "cook_id"),
+            inverseJoinColumns = @JoinColumn(name = "orderitem_id")
+    )
+    private List<OrderItem> orderItems = new ArrayList<>();
 
 
 

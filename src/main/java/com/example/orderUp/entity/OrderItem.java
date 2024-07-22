@@ -33,4 +33,7 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @ManyToMany(mappedBy = "orderItems")
+    private List<Cook> cooks;
+
 }

@@ -22,7 +22,8 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findAll().stream()
                 .map(customer -> CustomerDTO.builder()
                         .customerId(customer.getCustomerId())
-                        .name(customer.getName())
+                        .firstName(customer.getFirstName())
+                        .lastName(customer.getLastName())
                         .phoneNumber(customer.getPhoneNumber())
                         .email(customer.getEmail())
                         .build())
@@ -37,7 +38,8 @@ public class CustomerServiceImpl implements CustomerService {
             Customer c = customer.get();
             return CustomerDTO.builder()
                     .customerId(c.getCustomerId())
-                    .name(c.getName())
+                    .firstName(c.getFirstName())
+                    .lastName(c.getLastName())
                     .email(c.getEmail())
                     .phoneNumber(c.getPhoneNumber())
                     .build();
@@ -51,7 +53,8 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = Customer.builder()
                 .customerId(customerDTO.getCustomerId())
                 .email(customerDTO.getEmail())
-                .name(customerDTO.getName())
+                .firstName(customerDTO.getFirstName())
+                .lastName(customerDTO.getLastName())
                 .phoneNumber(customerDTO.getPhoneNumber())
                 .build();
 
@@ -60,7 +63,8 @@ public class CustomerServiceImpl implements CustomerService {
         return CustomerDTO.builder()
                 .customerId(savedCustomer.getCustomerId())
                 .email(savedCustomer.getEmail())
-                .name(savedCustomer.getName())
+                .firstName(savedCustomer.getFirstName())
+                .lastName(savedCustomer.getLastName())
                 .phoneNumber(savedCustomer.getPhoneNumber())
                 .build();
     }
@@ -70,13 +74,15 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
         if (optionalCustomer.isPresent()) {
             Customer customer = optionalCustomer.get();
-            customer.setName(customerDTO.getName());
+            customer.setFirstName(customerDTO.getFirstName());
+            customer.setLastName(customer.getLastName());
             customer.setPhoneNumber(customerDTO.getPhoneNumber());
             customer.setEmail(customerDTO.getEmail());
             Customer updatedCustomer = customerRepository.save(customer);
             return CustomerDTO.builder()
                     .customerId(updatedCustomer.getCustomerId())
-                    .name(updatedCustomer.getName())
+                    .firstName(updatedCustomer.getFirstName())
+                    .lastName(updatedCustomer.getLastName())
                     .phoneNumber(updatedCustomer.getPhoneNumber())
                     .email(updatedCustomer.getEmail())
                     .build();

@@ -5,14 +5,17 @@ import com.example.orderUp.entity.OrderStatus;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
 @Builder
 public class OrderDTO {
     private Long orderId;
-    private Date orderDate;
+    private LocalDateTime orderTime;
     private OrderStatus status;
     private Long tableId;
+    private Long waiterId;
+    private LocalDateTime finishedTime;
 
 }

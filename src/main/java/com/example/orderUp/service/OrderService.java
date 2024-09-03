@@ -10,4 +10,5 @@ public interface OrderService {
     OrderDTO saveOrder(OrderDTO orderDTO);
     OrderDTO updateOrder(Long id,OrderDTO orderDTO);
     boolean deleteOrder(Long id);
+    OrderDTO confirmOrder(Long orderId,Long waiterId);
 }

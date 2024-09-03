@@ -26,8 +26,8 @@ public class RestaurantTable {
     @JoinColumn(name = "waiter_id")
     private Waiter waiter;
 
-    @OneToMany(mappedBy = "restaurantTable", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Order> orders;
+    @OneToOne(mappedBy = "restaurantTable", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Order orders;
 
 
 }

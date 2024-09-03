@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,6 +30,9 @@ public class Waiter {
     @OneToMany
     @JoinColumn(name = "waiter_id")
     private Set<RestaurantTable> restaurantTables;
+
+    @OneToMany(mappedBy = "waiter", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> confirmedOrders;
 
 
 

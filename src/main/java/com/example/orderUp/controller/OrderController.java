@@ -37,6 +37,18 @@ public class OrderController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/{orderId}/confirm/{waiterId}")
+    public ResponseEntity<OrderDTO> confirmOrder(@PathVariable Long orderId, @PathVariable Long waiterID){
+        OrderDTO confirmedOrderDTO = orderService.confirmOrder(orderId,waiterID);
+        if (confirmedOrderDTO!=null){
+            return ResponseEntity.ok(confirmedOrderDTO);
+
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<OrderDTO> updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO){
         OrderDTO updatedOrderDTO = orderService.updateOrder(id,orderDTO);

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -20,14 +21,23 @@ public class Order {
     @Column(name = "order_id")
     private Long orderId;
 
-    @Column(name = "order_date")
-    private Date orderDate;
+    @Column(name = "order_time")
+    private LocalDateTime orderTime;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @ManyToOne
-    @JoinColumn(name = "table_id", nullable = false)
+    @Column(name = "finished_time")
+    private LocalDateTime finishedTime;
+
+    @OneToOne
+    @JoinColumn(name = "table_id", nullable = false, unique = true)
     private RestaurantTable restaurantTable;
+
+    @ManyToOne
+    @JoinColumn(name = "waiter_id")
+    private Waiter waiter;
+
+
 }

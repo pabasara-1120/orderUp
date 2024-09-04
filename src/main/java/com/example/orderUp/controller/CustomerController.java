@@ -54,4 +54,14 @@ public class CustomerController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/{customerId}/assign-table/{tableId}")
+    public ResponseEntity<CustomerDTO> assignTableToCustomer(@PathVariable Long customerId, @PathVariable Long tableId) {
+        CustomerDTO updatedCustomer = customerService.assignTableToCustomer(customerId, tableId);
+        if (updatedCustomer != null) {
+            return ResponseEntity.ok(updatedCustomer);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

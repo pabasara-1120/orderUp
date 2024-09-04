@@ -1,5 +1,6 @@
 package com.example.orderUp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,11 +24,16 @@ public class RestaurantTable {
     private String url;
 
     @ManyToOne
-    @JoinColumn(name = "waiter_id")
+    @JoinColumn(name = "waiter_id",nullable = true)
     private Waiter waiter;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "restaurantTable", cascade = CascadeType.ALL, orphanRemoval = true)
     private Order orders;
+
+
+
+
 
 
 }

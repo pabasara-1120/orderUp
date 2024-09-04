@@ -2,7 +2,9 @@ package com.example.orderUp.service.serviceImpl;
 
 import com.example.orderUp.dto.CustomerDTO;
 import com.example.orderUp.entity.Customer;
+import com.example.orderUp.entity.RestaurantTable;
 import com.example.orderUp.repository.CustomerRepository;
+import com.example.orderUp.repository.TableRepository;
 import com.example.orderUp.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private TableRepository tableRepository;
+
     @Override
     public List<CustomerDTO> getAllCustomers() {
         return customerRepository.findAll().stream()
@@ -26,6 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
                         .lastName(customer.getLastName())
                         .phoneNumber(customer.getPhoneNumber())
                         .email(customer.getEmail())
+                        .tableId(customer.getTableId())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -42,6 +48,8 @@ public class CustomerServiceImpl implements CustomerService {
                     .lastName(c.getLastName())
                     .email(c.getEmail())
                     .phoneNumber(c.getPhoneNumber())
+                    .tableId(c.getTableId())
+
                     .build();
 
         }
@@ -56,6 +64,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .firstName(customerDTO.getFirstName())
                 .lastName(customerDTO.getLastName())
                 .phoneNumber(customerDTO.getPhoneNumber())
+                .tableId(customerDTO.getTableId())
                 .build();
 
         Customer savedCustomer = customerRepository.save(customer);
@@ -66,18 +75,22 @@ public class CustomerServiceImpl implements CustomerService {
                 .firstName(savedCustomer.getFirstName())
                 .lastName(savedCustomer.getLastName())
                 .phoneNumber(savedCustomer.getPhoneNumber())
+                .tableId(savedCustomer.getTableId())
+
                 .build();
     }
 
     @Override
     public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO) {
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
+
         if (optionalCustomer.isPresent()) {
             Customer customer = optionalCustomer.get();
             customer.setFirstName(customerDTO.getFirstName());
             customer.setLastName(customer.getLastName());
             customer.setPhoneNumber(customerDTO.getPhoneNumber());
             customer.setEmail(customerDTO.getEmail());
+            customer.setTableId(customerDTO.getTableId());
             Customer updatedCustomer = customerRepository.save(customer);
             return CustomerDTO.builder()
                     .customerId(updatedCustomer.getCustomerId())
@@ -85,7 +98,30 @@ public class CustomerServiceImpl implements CustomerService {
                     .lastName(updatedCustomer.getLastName())
                     .phoneNumber(updatedCustomer.getPhoneNumber())
                     .email(updatedCustomer.getEmail())
+                    .tableId(updatedCustomer.getTableId())
                     .build();
+        }
+        return null;
+    }
+
+    @Override
+    public CustomerDTO assignTableToCustomer(Long customerId, Long tableId) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        Optional<RestaurantTable> optionalRestaurantTable = tableRepository.findById(tableId);
+        if(optionalCustomer.isPresent() && optionalRestaurantTable.isPresent()){
+            Customer customer = optionalCustomer.get();
+            customer.setTableId(tableId);
+
+            Customer updatedCustomer = customerRepository.save(customer);
+            return CustomerDTO.builder()
+                    .customerId(updatedCustomer.getCustomerId())
+                    .firstName(updatedCustomer.getFirstName())
+                    .lastName(updatedCustomer.getLastName())
+                    .phoneNumber(updatedCustomer.getPhoneNumber())
+                    .email(updatedCustomer.getEmail())
+                    .tableId(updatedCustomer.getTableId())
+                    .build();
+
         }
         return null;
     }

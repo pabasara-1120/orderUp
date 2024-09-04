@@ -10,5 +10,6 @@ public interface CustomerService {
     CustomerDTO getCustomerById(Long id);
     CustomerDTO saveCustomer(CustomerDTO customerDTO);
     CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO);
+    CustomerDTO assignTableToCustomer(Long customerId, Long tableId);
     boolean deleteCustomer(Long id);
 }

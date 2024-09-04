@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -38,6 +39,12 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "waiter_id")
     private Waiter waiter;
+
+    @OneToMany
+    @JoinColumn(name = "orderDetail_id")
+    private List<OrderDetails> orderDetails;
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.example.orderUp.dto;
 
+import com.example.orderUp.entity.Cart;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,4 +14,5 @@ public class CustomerDTO {
     private String lastName;
     private String phoneNumber;
     private String email;
+    private Long tableId;
 }

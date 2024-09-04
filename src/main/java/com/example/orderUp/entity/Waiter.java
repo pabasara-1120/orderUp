@@ -31,8 +31,11 @@ public class Waiter {
     @JoinColumn(name = "waiter_id")
     private Set<RestaurantTable> restaurantTables;
 
-    @OneToMany(mappedBy = "waiter", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
+    @JoinColumn(name = "waiter_id")
     private List<Order> confirmedOrders;
+
+
 
 
 

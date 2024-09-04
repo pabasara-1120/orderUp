@@ -11,6 +11,6 @@ public class ItemDTO {
     private Long itemId;
     private String name;
     private List<String> ingredients;
-    private Long orderId;
+    private Long orderDetailsId;
 
 }

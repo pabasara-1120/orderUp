@@ -29,7 +29,7 @@ public class ItemServiceImpl implements ItemService {
                         .itemId(orderItem.getItemId())
                         .name(orderItem.getName())
                         .ingredients(orderItem.getIngredients())
-                        .orderId(orderItem.getOrder()!=null?orderItem.getOrder().getOrderId():null)
+                        //.orderId(orderItem.getOrder()!=null?orderItem.getOrder().getOrderId():null)
                         .build())
                 .collect(Collectors.toList());
     }
@@ -43,7 +43,7 @@ public class ItemServiceImpl implements ItemService {
                     .itemId(item.getItemId())
                     .name(item.getName())
                     .ingredients(item.getIngredients())
-                    .orderId(item.getOrder()!=null? item.getOrder().getOrderId():null)
+                    //.orderId(item.getOrder()!=null? item.getOrder().getOrderId():null)
                     .build();
         }
         return null;
@@ -51,12 +51,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO saveItem(ItemDTO itemDTO) {
-        Order order = itemDTO.getOrderId()!=null? orderRepository.findById(itemDTO.getOrderId()).orElse(null):null;
+        //Order order = itemDTO.getOrderId()!=null? orderRepository.findById(itemDTO.getOrderId()).orElse(null):null;
         OrderItem orderItem = OrderItem.builder()
                 .itemId(itemDTO.getItemId())
                 .name(itemDTO.getName())
                 .ingredients(itemDTO.getIngredients())
-                .order(order)
+                //.order(order)
                 .build();
 
         OrderItem savedItem = itemRepository.save(orderItem);
@@ -65,26 +65,26 @@ public class ItemServiceImpl implements ItemService {
                 .itemId(savedItem.getItemId())
                 .name(savedItem.getName())
                 .ingredients(savedItem.getIngredients())
-                .orderId(savedItem.getOrder()!=null ? savedItem.getOrder().getOrderId():null)
+                //.orderId(savedItem.getOrder()!=null ? savedItem.getOrder().getOrderId():null)
                 .build();
     }
 
     @Override
     public ItemDTO updateItem(Long id, ItemDTO itemDTO) {
-        Order order = itemDTO.getOrderId()!=null? orderRepository.findById(itemDTO.getOrderId()).orElse(null):null;
+        //Order order = itemDTO.getOrderId()!=null? orderRepository.findById(itemDTO.getOrderId()).orElse(null):null;
         Optional<OrderItem> optionalItem = itemRepository.findById(id);
         if(optionalItem.isPresent()){
             OrderItem item = optionalItem.get();
             item.setName(itemDTO.getName());
             item.setIngredients(itemDTO.getIngredients());
-            item.setOrder(order);
+            //item.setOrder(order);
 
             OrderItem updatedItem = itemRepository.save(item);
             return ItemDTO.builder()
                     .itemId(updatedItem.getItemId())
                     .name(updatedItem.getName())
                     .ingredients(updatedItem.getIngredients())
-                    .orderId(updatedItem.getOrder()!=null? updatedItem.getOrder().getOrderId():null)
+                    //.orderId(updatedItem.getOrder()!=null? updatedItem.getOrder().getOrderId():null)
                     .build();
         }
         return null;

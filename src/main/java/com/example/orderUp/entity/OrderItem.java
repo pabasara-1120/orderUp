@@ -30,8 +30,8 @@ public class OrderItem {
     private List<String> ingredients;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name = "orderDetails_id", nullable = false)
+    private OrderDetails orderDetails;
 
     @ManyToMany(mappedBy = "orderItems")
     private List<Cook> cooks;

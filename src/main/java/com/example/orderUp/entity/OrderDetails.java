@@ -2,15 +2,18 @@ package com.example.orderUp.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "order_details")
 public class OrderDetails {
 
@@ -30,8 +33,14 @@ public class OrderDetails {
     @Column(name = "quantity")
     private int quantity;
 
-    @OneToMany(mappedBy = "orderDetails", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItemList;
+    @ManyToMany
+    @JoinTable(
+            name = "detail_item",
+            joinColumns = @JoinColumn(name = "orderDetails_id"),
+            inverseJoinColumns = @JoinColumn(name = "orderitem_id")
+    )
+    private List<OrderItem> orderItems = new ArrayList<>();
+
 
     @ManyToOne
     @JoinColumn(name = "cart_id")

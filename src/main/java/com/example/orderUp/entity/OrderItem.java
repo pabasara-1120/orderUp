@@ -1,5 +1,6 @@
 package com.example.orderUp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,12 +30,14 @@ public class OrderItem {
     @Column(name = "ingredient")
     private List<String> ingredients;
 
-    @ManyToOne
-    @JoinColumn(name = "orderDetails_id", nullable = false)
-    private OrderDetails orderDetails;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "orderItems")
     private List<Cook> cooks;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "orderItems")
+    private List<OrderDetails> orderDetails;
 
 
 

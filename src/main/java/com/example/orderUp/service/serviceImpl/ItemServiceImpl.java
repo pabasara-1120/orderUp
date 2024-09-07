@@ -4,6 +4,7 @@ import com.example.orderUp.dto.ItemDTO;
 import com.example.orderUp.entity.Order;
 import com.example.orderUp.entity.OrderItem;
 import com.example.orderUp.repository.ItemRepository;
+import com.example.orderUp.repository.OrderDetailRepository;
 import com.example.orderUp.repository.OrderRepository;
 import com.example.orderUp.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
-    @Autowired
-    private OrderRepository orderRepository;
+//    @Autowired
+//    private OrderDetailRepository orderDetailRepository;
 
     @Override
     public List<ItemDTO> getALLItems() {
@@ -29,7 +30,7 @@ public class ItemServiceImpl implements ItemService {
                         .itemId(orderItem.getItemId())
                         .name(orderItem.getName())
                         .ingredients(orderItem.getIngredients())
-                        //.orderId(orderItem.getOrder()!=null?orderItem.getOrder().getOrderId():null)
+                        //.order(orderItem.getOrder()!=null?orderItem.getOrder().getOrderId():null)
                         .build())
                 .collect(Collectors.toList());
     }

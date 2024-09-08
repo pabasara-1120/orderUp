@@ -33,13 +33,13 @@ public class OrderDetails {
     @Column(name = "quantity")
     private int quantity;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "detail_item",
+            name = "order_details_items",
             joinColumns = @JoinColumn(name = "orderDetails_id"),
-            inverseJoinColumns = @JoinColumn(name = "orderitem_id")
+            inverseJoinColumns = @JoinColumn(name = "item_id")
     )
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItem> orderItems;
 
 
     @ManyToOne

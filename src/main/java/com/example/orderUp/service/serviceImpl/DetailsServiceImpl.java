@@ -6,6 +6,7 @@ import com.example.orderUp.entity.Customer;
 import com.example.orderUp.entity.OrderDetails;
 import com.example.orderUp.entity.OrderItem;
 import com.example.orderUp.repository.CustomerRepository;
+import com.example.orderUp.repository.ItemRepository;
 import com.example.orderUp.repository.OrderDetailRepository;
 import com.example.orderUp.service.DetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DetailsServiceImpl implements DetailService {
@@ -24,41 +26,49 @@ public class DetailsServiceImpl implements DetailService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private ItemRepository orderItemRepository;
+
     @Override
     public OrderDetailsDTO addItemToDetails(Long orderDetailsId, ItemDTO itemDTO) {
         Optional<OrderDetails> optionalOrderDetails = orderDetailRepository.findById(orderDetailsId);
-        if (optionalOrderDetails.isPresent()){
+        if (optionalOrderDetails.isPresent()) {
             OrderDetails orderDetails = optionalOrderDetails.get();
-            OrderItem orderItem = OrderItem.builder()
-                            .itemId(itemDTO.getItemId())
+
+            // Find or create the OrderItem
+            OrderItem orderItem = orderItemRepository.findById(itemDTO.getItemId())
+                    .orElse(OrderItem.builder()
                             .name(itemDTO.getName())
-                                    .ingredients(itemDTO.getIngredients())
-                                            .build();
+                            .ingredients(itemDTO.getIngredients())
+                            .build());
+
+            // Add the OrderItem to the OrderDetails' orderItemList
             orderDetails.getOrderItems().add(orderItem);
-            OrderDetails savedOrderDetail = orderDetailRepository.save(orderDetails);
-            List<OrderItem> savedOrderDetailOrderItems = savedOrderDetail.getOrderItems();
-            List<ItemDTO> itemDTOList = savedOrderDetailOrderItems.stream()
-                    .map(item ->ItemDTO.builder()
+
+            // Save the updated OrderDetails (this will automatically update the join table)
+            OrderDetails savedOrderDetails = orderDetailRepository.save(orderDetails);
+
+            // Convert OrderItem list to ItemDTO list
+            List<ItemDTO> itemDTOList = savedOrderDetails.getOrderItems().stream()
+                    .map(item -> ItemDTO.builder()
                             .itemId(item.getItemId())
                             .name(item.getName())
                             .ingredients(item.getIngredients())
-                            .build()).toList();
+                            .build())
+                    .collect(Collectors.toList());
 
+            // Build and return the OrderDetailsDTO
             return OrderDetailsDTO.builder()
-                    .orderDetailsId(orderDetails.getOrderDetail_id())
-                    .orderId(orderDetails.getOrder()!=null? orderDetails.getOrder().getOrderId():null)
-                    .quantity(orderDetails.getQuantity())
+                    .orderDetailsId(savedOrderDetails.getOrderDetail_id())
+                    .orderId(savedOrderDetails.getOrder() != null ? savedOrderDetails.getOrder().getOrderId() : null)
+                    .quantity(savedOrderDetails.getQuantity())
                     .itemDTOList(itemDTOList)
-                    .customerId(orderDetails.getCustomer()!=null? orderDetails.getCustomer().getCustomerId():null)
                     .build();
+        } else {
+            throw new RuntimeException("OrderDetails with ID " + orderDetailsId + " not found.");
         }
-
-
-
-
-
-        return null;
     }
+
 
     @Override
     public List<OrderDetailsDTO> getOrderDetailsByCustomer(Long customerId) {

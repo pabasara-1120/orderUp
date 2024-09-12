@@ -2,9 +2,11 @@ package com.example.orderUp.service.serviceImpl;
 
 import com.example.orderUp.dto.ItemDTO;
 import com.example.orderUp.dto.OrderDetailsDTO;
+import com.example.orderUp.entity.Cart;
 import com.example.orderUp.entity.Customer;
 import com.example.orderUp.entity.OrderDetails;
 import com.example.orderUp.entity.OrderItem;
+import com.example.orderUp.repository.CartRepository;
 import com.example.orderUp.repository.CustomerRepository;
 import com.example.orderUp.repository.ItemRepository;
 import com.example.orderUp.repository.OrderDetailRepository;
@@ -28,6 +30,9 @@ public class DetailsServiceImpl implements DetailService {
 
     @Autowired
     private ItemRepository orderItemRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
 
     @Override
     public OrderDetailsDTO addItemToDetails(Long orderDetailsId, ItemDTO itemDTO) {
@@ -91,6 +96,50 @@ public class DetailsServiceImpl implements DetailService {
         return null;
         
 
+
+    }
+
+    @Override
+    public OrderDetailsDTO addOrderDetailsfromCustomer(Long customerId, OrderDetailsDTO orderDetailsDTO) {
+        return null;
+    }
+
+    @Override
+    public List<OrderDetailsDTO> addOrderDetailsfromCart(Long cartId) {
+        Optional<Cart> optionalCart= cartRepository.findById(cartId);
+        if(optionalCart.isPresent()){
+            Cart cart = optionalCart.get();
+            List<OrderDetails> orderDetailsList = cart.getOrderDetails();
+
+            List<OrderDetailsDTO> orderDetailsDTOList = orderDetailsList.stream()
+                    .map(orderDetails -> {
+
+                        OrderDetails newOrderDetails = OrderDetails.builder()
+                                .customer(cart.getCustomer())
+                                .quantity(orderDetails.getQuantity())
+                                .order(orderDetails.getOrder())
+                                .orderItems(orderDetails.getOrderItems())
+                                .build();
+
+                        OrderDetails savedOrderDetails = orderDetailRepository.save(newOrderDetails);
+
+                        return OrderDetailsDTO.builder()
+                                .orderDetailsId(savedOrderDetails.getOrderDetail_id())
+                                .orderId(savedOrderDetails.getOrder().getOrderId())
+                                .customerId(savedOrderDetails.getCustomer().getCustomerId())
+                                .quantity(savedOrderDetails.getQuantity())
+                                .itemDTOList(savedOrderDetails.getOrderItems().stream()
+                                        .map(item -> ItemDTO.builder()
+                                                .itemId(item.getItemId())
+                                                .name(item.getName())
+                                                .ingredients(item.getIngredients())
+                                                .build())
+                                        .collect(Collectors.toList()))
+                                .build();
+                    }).toList();
+
+        }
+        return null;
 
     }
 

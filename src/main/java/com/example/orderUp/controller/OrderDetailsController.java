@@ -36,4 +36,16 @@ public class OrderDetailsController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/{cartId}/add-from-cart")
+    public ResponseEntity<List<OrderDetailsDTO>> addOrderDetailsFromCart(
+            @PathVariable Long cartId,
+            @RequestBody OrderDetailsDTO orderDetailsDTO){
+        List<OrderDetailsDTO> orderDetailsDTOList = detailService.addOrderDetailsfromCart(cartId);
+        if(orderDetailsDTOList!=null){
+            return ResponseEntity.ok(orderDetailsDTOList);
+        }
+        return ResponseEntity.notFound().build();
+
+    }
 }

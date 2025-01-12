@@ -3,9 +3,9 @@
 ## Description
 OrderUp is a Spring Boot application designed to manage orders. This project includes a robust API for order management, with integrated API documentation.
 
-# ER Diagram
+## ER Diagram
 
-![Order Up ER Diagram](./Order_Up_ER_Diagram.drawio (1).png)
+[![Order Up ER Diagram])](https://github.com/pabasara-1120/orderUp/edit/main/README.md#:~:text=Order_Up_ER_Diagram.drawio-,Order_Up_ER_Diagram,-.drawio%20(1).png)
 
 
 ## Prerequisites
